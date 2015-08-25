@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{ISO8601} [%thread] %-5level %logger{36} [Line:%-3L] - %msg%n</pattern>
+		</encoder>
+		<!-- 只输出level级别的日志 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>logs/erp.log</File>
+		<encoder>
+			<pattern>%d{ISO8601} [%thread] %-5level %logger{36} [Line:%-3L] - %msg%n</pattern>
+		</encoder>
+		<!-- 只输出level级别以上的日志 -->
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/erp.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" addtivity="false">
+	    <appender-ref ref="FILE" />
+	</logger>
+	
+	<logger name="org.hibernate" level="WARN" addtivity="false">
+	    <appender-ref ref="FILE" />
+	</logger>
+	
+	<logger name="org.hibernate.tool.hbm2ddl" level="DEBUG" addtivity="false">
+	    <appender-ref ref="FILE" />
+	</logger>
+	
+	<logger name="org.eclipse.jetty.util.log" level="ERROR" addtivity="false">
+	    <appender-ref ref="FILE" />
+	</logger>
+
+	<root level="DEBUGE">
+		<appender-ref ref="FILE" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>
